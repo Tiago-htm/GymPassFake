@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "tsx  watch src/server.ts",
     "start": "node build/server.js ",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
