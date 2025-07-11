@@ -11,12 +11,12 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     password: z.string().min(6),
   })
 
-  const { name, email, password } = registerBodySchema.parse(request.body)
-
   try {
     const usersRepository = new PrismaUsersRepository()
-    const registerUseCase =  new  RegisterUseCase(usersRepository)
+    const registerUseCase = new RegisterUseCase(usersRepository)
 
+    const { name, email, password } = registerBodySchema.parse(request.body)
+    console.log('BODY:', request.body)
 
     await registerUseCase.execute({
       name,
@@ -24,10 +24,11 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       password,
     })
   } catch (err) {
-    if(err instanceof UserAlreadyExistsError){
+    if (err instanceof UserAlreadyExistsError) {
       return reply.status(409).send()
     }
-      return reply.status(500).send({message: err.message})
+    console.error(err)
+    return reply.status(500).send({ message: 'Internal server errooor' })
   }
 
   return reply.status(201).send()
